@@ -33,7 +33,6 @@ abstract class EntityDataDSL extends Script {
 			map ->
 				def prototype = entities[delegate as String]
 				for (entry in map) {
-					//FIXME: if map is empty, error os thrown
 					entities[entry.key] = prototype.clone() << entry.value
 				}
 		}

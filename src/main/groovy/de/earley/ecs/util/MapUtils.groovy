@@ -14,7 +14,6 @@ class MapUtils {
 	public static merge(Map base, Map add) {
 		add.each {
 			key, value ->
-				//TODO atm if base has a value and add a map, base gets overridden, is that correct?
 			if (base.get(key) && base.get(key) instanceof Map && value instanceof Map) {
 				// deep recursive merge
 				merge(base.get(key), value)

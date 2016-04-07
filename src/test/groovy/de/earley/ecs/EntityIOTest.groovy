@@ -32,6 +32,13 @@ class EntityIOTest extends Specification {
 				'a'.extend 'c': [base: false], 'd': [base: false, a:false]
 			'''
 
+	@Shared
+	def scriptFour =
+			'''
+				create 'a': [a:true]
+				'a'.extend 'b': [:]
+			'''
+
 	def "LoadScript"() {
 		given: "a script to load"
 		File script = File.createTempFile("temp", ".ge").with {
@@ -55,6 +62,7 @@ class EntityIOTest extends Specification {
 		scriptOne   | [test: [a: 1, b: 2]]
 		scriptTwo   | [base: [base: true, a: 1], extended: [base: false, a: 1]]
 		scriptThree | [a: [base: true, a: true], b: [nested: [bool: true]], c: [base: false, a: true], d: [base: false, a: false]]
+		scriptFour  | [a: [a:true], b: [a:true]]
 	}
 
 	def "Save and load"() {

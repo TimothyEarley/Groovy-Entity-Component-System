@@ -44,3 +44,17 @@ ecs.onRemove.addObserver {
 	observer, entitiy -> println "Removed $entity"
 }
 ```
+
+##Add to gradle
+
+Using jitpack.io, simply add the repository and dependency
+
+```gradle
+repositories {
+	maven { url "https://jitpack.io" }
+}
+
+dependencies {
+	compile 'com.github.TimothyEarley:Groovy-Entity-Component-System:master-SNAPSHOT'
+}
+```

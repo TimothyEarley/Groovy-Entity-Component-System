@@ -2,7 +2,10 @@ package de.earley.ecs
 
 import de.earley.ecs.core.Entity
 import de.earley.ecs.util.EntityDataDSL
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import org.codehaus.groovy.control.CompilerConfiguration
+
 /**
  * Created 23/03/16
  * @author Timothy Earley
@@ -26,7 +29,7 @@ class EntityIO {
 
 		shell.setVariable("entities", entities)
 		for (file in files) {
-			shell.evaluate( file )
+			shell.evaluate(file)
 		}
 
 		return entities
@@ -39,7 +42,7 @@ class EntityIO {
 	 * @param object needs to be serializable
 	 */
 	private static void write(File file, object) {
-		def oos = new ObjectOutputStream( new FileOutputStream( file ) )
+		def oos = new ObjectOutputStream(new FileOutputStream(file))
 		oos.writeObject(object)
 		oos.close()
 	}
@@ -50,7 +53,7 @@ class EntityIO {
 	 * @return the object
 	 */
 	private static read(File file) {
-		def ois = new ObjectInputStream( new FileInputStream( file ))
+		def ois = new ObjectInputStream(new FileInputStream(file))
 		def data = ois.readObject()
 		ois.close()
 		return data
@@ -90,6 +93,23 @@ class EntityIO {
 	 */
 	public static Entity load(File file) {
 		(Entity) read(file)
+	}
+
+	public static void saveJSON(File file, List<Entity> e, boolean pretty = true) {
+		def json = JsonOutput.toJson(e)
+		file.write pretty ? JsonOutput.prettyPrint(json) : json
+	}
+
+	public static List<Entity> loadJSON(File file) {
+		def list = new JsonSlurper().parse(file)
+		def entities = []
+		// since uuid does not get deserialized properly, ie. cast from string does not work, separate it.
+		list.each {
+			Map map ->
+				def id = map.remove('id')
+				entities << new Entity(map).with {setId(UUID.fromString(id)); delegate}
+		}
+		entities
 	}
 
 }

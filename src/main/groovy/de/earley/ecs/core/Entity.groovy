@@ -1,10 +1,8 @@
 package de.earley.ecs.core
 
 import de.earley.ecs.util.MapUtils
-import groovy.transform.Canonical
-import groovy.transform.EqualsAndHashCode
+import de.earley.ecs.util.SerializableObservableMap
 import groovy.transform.ToString
-
 /**
  * Created 23/03/16
  * @author Timothy Earley
@@ -13,17 +11,16 @@ import groovy.transform.ToString
  * Entities are essiantially just a map with data and some utility functions
  *
  */
-@Canonical
-@EqualsAndHashCode(includeFields = true)
 @ToString(includeNames = true)
 class Entity implements Serializable {
 
-	// should be final, but then it cant be serialized without black magic (which I don't have)
-	private id = UUID.randomUUID()
+	//TODO should be final, but then it cant be serialized without black magic (which I don't have)
+	UUID id = UUID.randomUUID()
 
-	boolean removed
+	// does not need to be saved, since it will always be false, except in the middle of an update
+	public transient boolean removed
 
-	ObservableMap props = [:]
+	SerializableObservableMap props = [:]
 
 	/**
 	 * Adds the args to the properties
@@ -44,37 +41,23 @@ class Entity implements Serializable {
 	protected Entity clone() {
 		// make sure the new map is modifiable by casting to HashMap (getContent is immutable)
 		def newProperties = MapUtils.deepcopy props.getContent() as HashMap
-		new Entity(props: newProperties as ObservableMap)
+		new Entity(props: newProperties as SerializableObservableMap)
 	}
 
 	def remove() {
 		removed = true
 	}
 
-	/*
-	!!!!!
-	When serialising, observers are lost
-	!!!!!
+	@Override
+	int hashCode() {
+		// only id counts
+		id.hashCode()
+	}
+
+	/**
+	 * Compares the id
 	 */
-
-	private void writeObject(ObjectOutputStream oos) throws IOException {
-		oos.with {
-			writeObject id
-			writeBoolean removed
-			writeObject props.getContent()
-		}
-	}
-
-	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-		ois.with {
-			id = readObject() as UUID
-			removed = readBoolean()
-			props = readObject() as ObservableMap
-		}
-	}
-
-
-	// i don't know why the generated one didn't work
+	@Override
 	public boolean equals(Object other) {
 		if (other == null) {
 			return false
@@ -88,7 +71,7 @@ class Entity implements Serializable {
 
 		Entity otherTyped = ((other) as Entity)
 
-		return this.removed == otherTyped.removed && this.id == otherTyped.id && this.props == otherTyped.props
+		id == otherTyped.id
 	}
 
 

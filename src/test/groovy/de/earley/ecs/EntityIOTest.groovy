@@ -62,7 +62,7 @@ class EntityIOTest extends Specification {
 		scriptOne   | [test: [a: 1, b: 2]]
 		scriptTwo   | [base: [base: true, a: 1], extended: [base: false, a: 1]]
 		scriptThree | [a: [base: true, a: true], b: [nested: [bool: true]], c: [base: false, a: true], d: [base: false, a: false]]
-		scriptFour  | [a: [a:true], b: [a:true]]
+		scriptFour  | [a: [a: true], b: [a: true]]
 	}
 
 	def "Save and load"() {
@@ -81,12 +81,35 @@ class EntityIOTest extends Specification {
 
 		where:
 		entity << [
-		        new Entity(),
-				new Entity(props: [a:true, b: [nested: true]]).with {
+				new Entity(),
+				new Entity(props: [a: true, b: [nested: true]]).with {
 					props.addPropertyChangeListener {} // should not matter / be deleted
 					return delegate
 				}
 		]
 
+	}
+
+	def "save and load entities as json"() {
+
+		given: "a temp file"
+		File tmp = File.createTempFile("temp", ".tmp").with {
+			deleteOnExit()
+			return delegate
+		}
+
+		when: "the entity iss saved"
+		EntityIO.saveJSON(tmp, data, pretty)
+
+		then: "the loaded entities are the same"
+		EntityIO.loadJSON(tmp) == data
+
+		where:
+		data                                                                | pretty
+		[new Entity()]                                                      | true
+		[new Entity(props: [test: true]), new Entity(props: [test: false])] | true
+		[new Entity(props: [test: true]), new Entity(props: [test: false])] | false
+		[]                                                                  | true
+		[]                                                                  | false
 	}
 }

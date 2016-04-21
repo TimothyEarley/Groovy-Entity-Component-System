@@ -82,7 +82,7 @@ class EntityComponentSystemTest extends Specification {
 		def count = 0
 		10.times { ecs.spawn('b') }
 
-		when: "a remove listener gets added inbetween some removes"
+		when: "a remove listener gets added in between some removes"
 		ecs.with {
 			liveEntities[0].remove()
 			update()
@@ -97,6 +97,30 @@ class EntityComponentSystemTest extends Specification {
 
 		then: "the count must be equals to the removed entities after the listener was added"
 		count == 3
+
+	}
+
+
+	def "Remove component"() {
+
+		given: "an ecs"
+		def ecs = new EntityComponentSystem()
+		def called = 0
+
+		when: "a component gets added and then removed"
+		ecs.addComponent new Component() {
+			@Override
+			def update(List<Entity> entities) {
+				called++
+				remove = true
+			}
+		}
+		2.times {
+			ecs.update()
+		}
+
+		then: ""
+		called == 1
 
 	}
 }

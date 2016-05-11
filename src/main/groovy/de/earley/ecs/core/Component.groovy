@@ -1,13 +1,19 @@
 package de.earley.ecs.core
-
-import de.earley.ecs.core.Entity
-
 /**
  * Created 24/03/16
  * @author Timothy Earley
  */
-interface Component {
+abstract class Component {
 
-	void update(List<Entity> entities);
+	/**
+	 * Signals, whether the component can be removed
+	 */
+	def remove = false
+
+	/**
+	 * Updates the entities according to the components task
+	 * @param entities the list of available entities
+	 */
+	abstract update(List<Entity> entities);
 
 }

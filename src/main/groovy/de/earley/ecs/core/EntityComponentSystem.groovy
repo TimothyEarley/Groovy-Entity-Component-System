@@ -62,8 +62,9 @@ class EntityComponentSystem {
 	private List<Component> components = [];
 
 	public void update() {
-		components.each {
+		components.reverseEach {
 			it.update(liveEntities)
+			if (it.remove) components.remove it
 		}
 
 		// removed entities

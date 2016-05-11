@@ -1,4 +1,8 @@
 # Groovy_ECS
+
+Master: [![Build Status](https://travis-ci.org/TimothyEarley/Groovy-Entity-Component-System.svg?branch=master)](https://travis-ci.org/TimothyEarley/Groovy-Entity-Component-System)
+Dev: [![Build Status](https://travis-ci.org/TimothyEarley/Groovy-Entity-Component-System.svg?branch=dev)](https://travis-ci.org/TimothyEarley/Groovy-Entity-Component-System)
+
 Entity Component System written in Groovy with the main focus on creating a simple DSL.
 This allows users to create entities with arbitrary attributes which are stored in nested lists, as well as extending entities with more properties (inheritence).
 The data and logic are completely seperated with data declared in the afformentioned DSL and the components (logic) being plugged into the System. These components are then given all entities on each update to manipluate to their liking.

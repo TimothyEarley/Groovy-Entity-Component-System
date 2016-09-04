@@ -112,4 +112,27 @@ class EntityIOTest extends Specification {
 		[]                                                                  | true
 		[]                                                                  | false
 	}
+
+	def "load files from path names"() {
+		when: "two files are loaded"
+		def result = EntityIO.loadScript ( 'entities/A.ge', 'entities/B.ge' )
+
+		then: "both files were loaded"
+		result.size()  == 2
+		result.a.props.data
+		result.b.props.data
+	}
+
+	def "load a directory"() {
+		given: "a directoy"
+		def dir = 'entities'
+
+		when: 'the dir is loaded'
+		def result = EntityIO.loadScriptDirectory 'entities'		
+
+		then: "the result matches with the file"
+		result.size()  == 2
+		result.a.props.data
+		result.b.props.data
+	}
 }

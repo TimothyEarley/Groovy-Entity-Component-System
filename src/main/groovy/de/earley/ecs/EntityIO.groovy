@@ -19,6 +19,26 @@ class EntityIO {
 	private static final shell = new GroovyShell(config)
 
 	/**
+	* Converts the path to a file/directory
+	* @param filepath must be on the classpath
+	* @return the file
+	*/
+	private static File pathToFile(String filepath) {
+		def uri = ClassLoader.getSystemClassLoader().getResource(filepath)?.toURI()
+		if (!uri) throw new IOException("The file $filepath could not be found.")
+		return new File ( uri )
+	}
+
+	/**
+	* Converts the filenames to files and runs the scripts
+	* @param file paths
+	* @returns entities loaded
+	*/
+	public static Map<String, Entity> loadScript(String... filepaths) {
+		loadScript ( (File[]) filepaths.collect { pathToFile it }.toArray() )
+	}
+
+	/**
 	 * Runs all files as groovy entities
 	 * @param files to be run
 	 * @return entites loaded
@@ -34,6 +54,24 @@ class EntityIO {
 
 		return entities
 
+	}
+
+	/**
+	* Loads all scripts in the directoy
+	* @param dir the directoy as a filepath
+	*  @return entites loaded
+	*/
+	public static Map<String, Entity> loadScriptDirectory(String dirname) {
+		loadScriptDirectory ( pathToFile ( dirname ) )
+	}
+
+	/**
+	* Loads all scripts in the directoy
+	* @param dir the directoy
+	*  @return entites loaded
+	*/
+	public static Map<String, Entity> loadScriptDirectory(File dir) {
+		loadScript ( dir.listFiles() )
 	}
 
 	/**

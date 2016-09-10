@@ -75,7 +75,7 @@ class EntityComponentSystem {
 		}
 	}
 
-	public spawn(String name, Map args = [:]) {
+	public Entity spawn(String name, Map args = [:]) {
 		// Extend the prototype
 		def entity = prototypes[name]?.clone()
 		// Throw an error if not successful
@@ -85,9 +85,10 @@ class EntityComponentSystem {
 		spawn(entity)
 	}
 
-	public spawn(Entity entity) {
+	public Entity spawn(Entity entity) {
 		onSpawn.notifyObservers(entity)
 		liveEntities << entity
+		return entity
 	}
 
 	public void addComponent(Component component) {

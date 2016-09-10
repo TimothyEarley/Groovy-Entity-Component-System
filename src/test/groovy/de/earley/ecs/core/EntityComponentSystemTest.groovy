@@ -18,8 +18,8 @@ class EntityComponentSystemTest extends Specification {
 	def "Update and remove"() {
 		given: "an ecs"
 		def ecs = new EntityComponentSystem(prototypes: protos)
-		ecs.spawn('a')
-		ecs.liveEntities[0].remove()
+		def entity = ecs.spawn('a')
+		entity.remove()
 
 		when: "an update occurs"
 		ecs.update()
@@ -33,11 +33,11 @@ class EntityComponentSystemTest extends Specification {
 		def ecs = new EntityComponentSystem(prototypes: protos)
 
 		when: "we spawn an entity"
-		ecs.spawn("a")
+		def entity = ecs.spawn("a")
 
 		then: "a new entity gets added"
 		ecs.liveEntities.size() == 1
-		ecs.liveEntities[0].props == protos.a.props
+		ecs.liveEntities[0] == entity
 	}
 
 	def "AddComponent"() {

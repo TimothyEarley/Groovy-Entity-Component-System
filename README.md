@@ -1,5 +1,6 @@
 # Groovy_ECS
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cc06b0ef7ecc43cb830e4086091ac6e2)](https://www.codacy.com/app/TimothyEarley/Groovy-Entity-Component-System?utm_source=github.com&utm_medium=referral&utm_content=TimothyEarley/Groovy-Entity-Component-System&utm_campaign=badger)
 Master: [![Build Status](https://travis-ci.org/TimothyEarley/Groovy-Entity-Component-System.svg?branch=master)](https://travis-ci.org/TimothyEarley/Groovy-Entity-Component-System)
 Dev: [![Build Status](https://travis-ci.org/TimothyEarley/Groovy-Entity-Component-System.svg?branch=dev)](https://travis-ci.org/TimothyEarley/Groovy-Entity-Component-System)
 

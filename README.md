@@ -7,7 +7,7 @@ Entity Component System written in Groovy with the main focus on creating a simp
 This allows users to create entities with arbitrary attributes which are stored in nested lists, as well as extending entities with more properties (inheritence).
 The data and logic are completely seperated with data declared in the afformentioned DSL and the components (logic) being plugged into the System. These components are then given all entities on each update to manipluate to their liking.
 
-##DSL
+## DSL
 
 ```groovy
 def sword = [
@@ -28,7 +28,7 @@ create Zombie: [
 		]
 ```
 
-##Components
+## Components
 
 ```groovy
 def ecs = new EntityComponentSystem()
@@ -49,7 +49,7 @@ ecs.onRemove.addObserver {
 }
 ```
 
-##Add to gradle
+## Add to gradle
 
 Using jitpack.io, simply add the repository and dependency
 
